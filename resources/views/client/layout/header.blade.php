@@ -1,5 +1,5 @@
 <header class="block-clear block-both">
-    <h1 class="title-head-h1">Thương Đô Logistics - Dịch vụ Order Taobao Nhập hàng Trung Quốc, Đặt hàng Quảng Châu</h1>
+    <h1 class="title-head-h1">HTKK Logistics - Dịch vụ Order Taobao Nhập hàng Trung Quốc, Đặt hàng Quảng Châu</h1>
 
     <div class="header-top block-clear block-both">
         <div class="container">
@@ -12,9 +12,15 @@
 			</span>
             </div>
             <ul class="header-top-right">
+                @if(Auth::check())
+                    <li>Xin chào <a href="{{route('client_home')}}">{{Auth::user()['name']}} - </a>
+                        <a style="color: red" href="{{route('logout')}}">Đăng xuất</a>
+                    </li>
+                @else
                 <span class="icon"></span>
                 <li class="dang-nhap"><a href="{{route('auth_login')}}">Đăng nhập</a></li>
                 <li><a href="{{route('auth_register')}}">Đăng ký</a></li>
+                @endif
             </ul>
         </div>
 

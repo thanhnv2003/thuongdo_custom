@@ -29,9 +29,12 @@
 
 @include('client.layout.css')
 
+
+
 </head>
 <body class="html front not-logged-in no-sidebars page-home  " >
 <div class="olay-css" style="display: none;"></div>
+@include('sweetalert::alert', ['cdn' => "https://cdn.jsdelivr.net/npm/sweetalert2@9"])
 
 @include('client.layout.header')
 

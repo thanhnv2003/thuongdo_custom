@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 
 use App\Http\Controllers\Client\LoginController;
+use App\Http\Controllers\Admin\HomeAdminController;
 
 /*
 |--------------------------------------------------------------------------
@@ -22,5 +23,10 @@ Route::get('/', function () {
 Route::match(['GET', 'POST'],'dang-nhap', [LoginController::class, 'login'])->name('auth_login');
 Route::match(['GET', 'POST'],'dang-ky', [LoginController::class, 'register'])->name('auth_register');
 Route::match(['GET', 'POST'],'quen-mat-khau', [LoginController::class, 'forgot'])->name('auth_forgot');
+Route::get('dang-xuat', [LoginController::class, 'logout'])->name('logout');
+
+Route::prefix('admin')->middleware(['auth', 'admin'])->group(function (){
+    Route::get('dashboard', [HomeAdminController::class, 'index'])->name('admin_home');
+});
 
 
