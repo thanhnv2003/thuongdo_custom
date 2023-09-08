@@ -13,7 +13,7 @@
             </div>
             <ul class="header-top-right">
                 @if(Auth::check())
-                    <li>Xin chào <a href="{{route('client_home')}}">{{Auth::user()['name']}} - </a>
+                    <li>Xin chào <a href="{{route('cus_home')}}">{{Auth::user()['name']}} - </a>
                         <a style="color: red" href="{{route('logout')}}">Đăng xuất</a>
                     </li>
                 @else

@@ -97,4 +97,45 @@ class LoginController extends Controller
         toast('Đăng xuất thành công', 'success');
         return redirect()->route('client_home');
     }
+
+    public function changePass(Request $request)
+    {
+        $user = Auth::user();
+        if ($request->isMethod('POST')){
+            $params = $request->all();
+            $validator = Validator::make($params,[
+                'current_password' => 'required',
+                'new_password' => 'required|confirmed',
+            ]);
+
+            if ($validator->fails()) {
+                if (count($validator->messages()->all()) < 1){
+                    toast($validator->messages()->all()[0], 'error');
+                }else{
+                    $html = "<ul style='list-style: none;'>";
+                    foreach($validator->messages()->all() as $error) {
+                        $html .= "<li>$error</li>";
+                    }
+                    $html .= "</ul>";
+                    Alert::html('Lỗi!', $html, 'error');
+                }
+                return back()->with('toast_error', $validator->messages()->all()[0])->withInput();
+            }
+
+
+            if (Hash::check($request->current_password, $user['password'])) {
+                $value = User::find($user['id']);
+                $value['password'] = Hash::make($request->new_password);
+                $value->save();
+                toast('Mật khẩu đã được thay đổi thành công.', 'success');
+                return redirect()->route('cus_home');
+            }else{
+                toast('Mật khẩu hiện tại không đúng.', 'error');
+                return back();
+            }
+        }
+
+        return view('client.dashboard.content.thaydoimatkhau', compact('user'));
+    }
+
 }

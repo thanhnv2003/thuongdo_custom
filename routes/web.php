@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 
 use App\Http\Controllers\Client\LoginController;
 use App\Http\Controllers\Admin\HomeAdminController;
+use App\Http\Controllers\Client\HomeController;
 
 /*
 |--------------------------------------------------------------------------
@@ -17,6 +18,9 @@ use App\Http\Controllers\Admin\HomeAdminController;
 */
 
 Route::get('/', function () {
+   return redirect()->route('client_home');
+});
+Route::get('trang-chu', function () {
     return view('client.home');
 })->name('client_home');
 
@@ -25,8 +29,15 @@ Route::match(['GET', 'POST'],'dang-ky', [LoginController::class, 'register'])->n
 Route::match(['GET', 'POST'],'quen-mat-khau', [LoginController::class, 'forgot'])->name('auth_forgot');
 Route::get('dang-xuat', [LoginController::class, 'logout'])->name('logout');
 
+Route::prefix('customer')->middleware(['auth'])->group(function (){
+    Route::get('dashboard', [HomeController::class, 'index'])->name('cus_home');
+    Route::match(['GET', 'POST'],'thay-doi-mat-khau', [LoginController::class, 'changePass'])->name('cus_pass');
+    Route::match(['GET', 'POST'],'thong-tin-ca-nhan', [HomeController::class, 'thong_tin_ca_nhan'])->name('cus_info');
+});
+
 Route::prefix('admin')->middleware(['auth', 'admin'])->group(function (){
     Route::get('dashboard', [HomeAdminController::class, 'index'])->name('admin_home');
+    Route::get('all-customer', [HomeAdminController::class, 'customerAll'])->name('admin_customer_all');
 });
 
 
